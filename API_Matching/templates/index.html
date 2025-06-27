@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Image Spark</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(120deg, #000000, #0d0d33);
+      overflow-x: hidden;
+      position: relative;
+      color: #ffffff;
+    }
+
+    /* Neon Glow Background Animation */
+    body::before {
+      content: '';
+      position: fixed;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background-image: radial-gradient(circle at 20% 30%, #6f00ff, transparent 25%),
+                        radial-gradient(circle at 70% 60%, #00e0ff, transparent 25%),
+                        radial-gradient(circle at 50% 90%, #ff00aa, transparent 25%);
+      z-index: -1;
+      animation: rotate 30s linear infinite;
+      opacity: 0.15;
+    }
+
+    @keyframes rotate {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 40px 20px;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 20px;
+      padding: 50px 30px;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 0 30px rgba(0, 0, 0, 0.6);
+      text-align: center;
+      max-width: 800px;
+      width: 100%;
+    }
+
+    .logo {
+      width: 80px;
+      height: 80px;
+      margin-bottom: 20px;
+      filter: drop-shadow(0 2px 8px rgba(255, 255, 255, 0.2));
+    }
+
+    h1 {
+      font-size: 3rem;
+      background: linear-gradient(to right, #ffffff, #cccccc);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 30px;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+    }
+
+    input[type="file"] {
+      padding: 10px 15px;
+      background: #fff;
+      color: #000;
+      font-weight: 500;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+      max-width: 300px;
+      width: 100%;
+    }
+    .input-row {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .input-row input[type="file"] {
+        flex: 1;
+        max-width: 300px;
+    }
+    .input-row button {
+        padding: 12px 20px;
+        border-radius: 8px;
+        font-size: 1.2rem;
+        border: none;
+        cursor: pointer;
+        background: linear-gradient(135deg, #00ffe0, #ff00c8);
+        color: white;
+        transition: background 0.3s ease;
+    }
+
+    .input-row button:hover {
+        background: linear-gradient(135deg, #00ccb8, #d100a8);
+    }
+    button {
+      background: linear-gradient(90deg, #00e0ff, #ff00ff);
+      border: none;
+      border-radius: 30px;
+      padding: 12px 35px;
+      color: #000;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 5px 20px rgba(0, 224, 255, 0.4), 0 0 20px rgba(255, 0, 255, 0.4);
+    }
+
+    #results {
+      margin-top: 40px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    #results img {
+      max-width: 200px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(255, 255, 255, 0.1);
+    }
+
+    /* Feature Section */
+    .features {
+      padding: 60px 20px;
+      background: #080821;
+    }
+
+    .features-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 30px;
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    .feature {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 30px 20px;
+      border-radius: 16px;
+      text-align: center;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.03);
+      transition: transform 0.3s ease;
+    }
+
+    .feature:hover {
+      transform: translateY(-5px);
+    }
+
+    .feature .icon {
+      font-size: 2.5rem;
+      margin-bottom: 12px;
+    }
+
+    .feature h3 {
+      font-size: 1.2rem;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+
+    .feature p {
+      font-size: 0.95rem;
+      color: #bbb;
+    }
+
+    @media (max-width: 700px) {
+      h1 {
+        font-size: 2.2rem;
+      }
+
+      .logo {
+        width: 60px;
+        height: 60px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <img src="/static/logo.png" alt="Logo" class="logo" />
+      <h1>SnapMatch</h1>
+      <form id="uploadForm" enctype="multipart/form-data">
+        <div class="input-row">
+            <input type="file" id="imageInput" name="file" accept=".png,.jpg,.jpeg" required />
+            <button type="submit">🔍</button>
+        </div>
+      </form>
+      <div id="results"></div>
+    </div>
+  </div>
+
+  <!-- Features -->
+  <section class="features">
+    <div class="features-container">
+      <div class="feature">
+        <div class="icon">🖼️</div>
+        <h3>Perfect Quality</h3>
+        <p>Matches your image with precise visual accuracy</p>
+      </div>
+      <div class="feature">
+        <div class="icon">🏆</div>
+        <h3>Top Matches</h3>
+        <p>Powered by deep learning for top visually-similar results.</p>
+      </div>
+      <div class="feature">
+        <div class="icon">⚡</div>
+        <h3>Fast Search</h3>
+        <p>Real-time image matching with no login required.</p>
+      </div>
+      <div class="feature">
+        <div class="icon">🗂️</div>
+        <h3>Multi-format</h3>
+        <p>Supports JPEG, PNG and other image types easily.</p>
+      </div>
+      <div class="feature">
+        <div class="icon">🔒</div>
+        <h3>Privacy First</h3>
+        <p>Images are securely handled and auto-deleted post-use.</p>
+      </div>
+      <div class="feature">
+        <div class="icon">❤️</div>
+        <h3>100% Free</h3>
+        <p>No ads, no fees. Enjoy the best for free.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Upload Script -->
+  <script>
+    document.getElementById('uploadForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const formData = new FormData();
+      const fileInput = document.getElementById('imageInput');
+      formData.append('file', fileInput.files[0]);
+
+      const resultsDiv = document.getElementById('results');
+      resultsDiv.innerHTML = '<p style="color: #ccc;">Searching...</p>';
+
+      try {
+        const response = await fetch('/upload', {
+          method: 'POST',
+          body: formData,
+        });
+
+        const data = await response.json();
+        if (data.error) {
+          resultsDiv.innerHTML = `<p style="color: red;">Error: ${data.error}</p>`;
+        } else {
+          let output = '';
+          data.similar_images.forEach((url) => {
+            output += `<img src="${url}" alt="Similar Image" />`;
+          });
+          resultsDiv.innerHTML = output;
+        }
+      } catch (error) {
+        resultsDiv.innerHTML = `<p style="color: red;">Error: ${error.message}</p>`;
+      }
+    });
+  </script>
+</body>
+</html>
